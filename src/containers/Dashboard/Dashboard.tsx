@@ -8,6 +8,11 @@ import IconAttendance from '../../../assets/images/ic_attendance.png';
 import IconPatrol from '../../../assets/images/ic_patrol.png';
 import IconSchedule from '../../../assets/images/ic_schedule.png';
 import * as Styles from './Style';
+import {
+    TEXT_PATROL,
+    TEXT_SCHEDULE,
+    TEXT_ATTENDANCE
+} from '../../shared/Constants';
 
 interface IProps {
     navigation: any;
@@ -26,8 +31,8 @@ class Dashboard extends React.Component<IProps> {
     public NavigationHandler = (event: GestureResponderEvent, type: string) => {
         // Do Nothing
         switch (type) {
-            case 'PATROL':
-                this.props.navigation.navigate('Patrol');
+            case TEXT_PATROL:
+                this.props.navigation.navigate(type);
                 break;
 
             default:
@@ -46,15 +51,15 @@ class Dashboard extends React.Component<IProps> {
                     <DashboardButton
                         onPress={this.NavigationHandler}
                         icon={IconPatrol}
-                        text="PATROL" />
+                        text={TEXT_PATROL} />
                     <DashboardButton
                         onPress={this.NavigationHandler}
                         icon={IconSchedule}
-                        text="SCHEDULE" />
+                        text={TEXT_SCHEDULE} />
                     <DashboardButton
                         onPress={this.NavigationHandler}
                         icon={IconAttendance}
-                        text="ATTENDANCE" />
+                        text={TEXT_ATTENDANCE} />
                 </View>
                 <View style={Styles.city}>
                     <Image source={CityImage} style={{ flex: 1, width: '100%' }} />

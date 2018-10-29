@@ -3,16 +3,17 @@ import { createStackNavigator } from 'react-navigation';
 import Splash from '../containers/SplashScreen/SplashScreen';
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Patrol from '../containers/Patrol/Patrol';
+import Scanner from '../containers/Scanner/Scanner';
 
 const RootStack = createStackNavigator(
     {
         Dashboard,
         Splash,
         Patrol,
+        Scanner
     },
     {
-        initialRouteName: 'Patrol',
-        /* The header config from HomeScreen is now here */
+        initialRouteName: 'Splash',
         navigationOptions: {
             headerStyle: {
                 backgroundColor: '#f4511e',

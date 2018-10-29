@@ -91,7 +91,7 @@ class Button extends React.PureComponent<IProps, IState> {
                     {this.renderRippleView()}
                     <View style={Styles.iconHolder}>
                         <Image source={icon} style={Styles.iconImage} />
-                        <Text style={Styles.iconText}>{text}</Text>
+                        <Text style={Styles.iconText}>{text.toUpperCase()}</Text>
                     </View>
                 </View>
             </TouchableWithoutFeedback>

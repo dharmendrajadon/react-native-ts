@@ -14,6 +14,7 @@ interface IProps {
     icon: any;
     text: string;
     color: string;
+    isDisabled: boolean;
     onPress(event: GestureResponderEvent, type: string): void;
 }
 
@@ -81,14 +82,17 @@ class Button extends React.PureComponent<IProps, IState> {
     }
 
     render() {
-        const { icon, color, text, onPress } = this.props;
+        const { icon, color, text, isDisabled, onPress } = this.props;
+
+        const backgroundColor: string = isDisabled ? '#CCCCCC' : color;
 
         return (
             <TouchableWithoutFeedback
+                disabled={isDisabled}
                 onPressIn={this.onPressedIn}
                 onPressOut={this.onPressedOut}
                 onPress={(event) => onPress(event, text)}>
-                <View style={{ ...Styles.iconButton, backgroundColor: color }}>
+                <View style={{ ...Styles.iconButton, backgroundColor }}>
                     {this.renderRippleView()}
                     <View style={Styles.iconHolder}>
                         <Image source={icon} style={Styles.iconImage} />

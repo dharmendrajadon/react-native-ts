@@ -12,6 +12,13 @@ import IconSOS from '../../../assets/images/ic_sos.png';
 import PatrolActionButton from '../../components/PatrolActionButton/PatrolActionButton';
 import * as Styles from './Style';
 import { getCurrentLocation, getRegionFromLocation } from '../../shared/StringUtils';
+import {
+    TEXT_START_PATROL,
+    TEXT_STOP_PATROL,
+    TEXT_INCIDENT,
+    TEXT_SOS
+} from '../../shared/Constants';
+import { setIsPatrolling, getIsPatrolling } from '../../shared/LocalStorage';
 
 interface IProps {
     navigation: any;
@@ -19,6 +26,7 @@ interface IProps {
 
 interface IState {
     defaultRegion: Region;
+    isPatrolling: boolean;
 }
 
 class Patrol extends React.Component<IProps, IState> {
@@ -36,7 +44,8 @@ class Patrol extends React.Component<IProps, IState> {
                 longitude: 0,
                 latitudeDelta: 0,
                 longitudeDelta: 0
-            }
+            },
+            isPatrolling: false,
         }
     }
 
@@ -49,13 +58,47 @@ class Patrol extends React.Component<IProps, IState> {
         }).catch((error) => {
             Alert.alert(error);
         });
+
+        getIsPatrolling().then((isPatrolling: boolean) => {
+            this.setState({
+                isPatrolling
+            });
+        }).catch(() => {
+            Alert.alert('Something Went Wrong!');
+        });
     }
 
     public NavigationHandler = (event: GestureResponderEvent, type: string) => {
         // Do Nothing
         switch (type) {
-            case 'PATROL':
-                this.props.navigation.navigate('Patrol');
+            case TEXT_START_PATROL:
+                Alert.alert('', 'Start new patrol tour?',
+                    [
+                        {
+                            text: 'OK',
+                            onPress: () => {
+                                this.props.navigation.navigate('Scanner');
+                            }
+                        },
+                        { text: 'Cancel', style: 'cancel' },
+                    ],
+                    { cancelable: false }
+                )
+                break;
+            case TEXT_STOP_PATROL:
+                setIsPatrolling(false).then(() => {
+                    this.setState({
+                        isPatrolling: false
+                    });
+                    Alert.alert('Patrol Tour Stopped', '',
+                        [
+                            { text: 'OK', style: 'cancel' }
+                        ],
+                        { cancelable: false }
+                    );
+                }).catch(() => {
+                    Alert.alert('Something Went Wrong! Please Try Again');
+                });
                 break;
 
             default:
@@ -65,6 +108,9 @@ class Patrol extends React.Component<IProps, IState> {
     }
 
     public render() {
+
+        const isPatrollingDisabled = this.state.isPatrolling;
+
         return (
             <View style={Styles.page}>
                 <View style={Styles.pageHeadingHolder}>
@@ -82,16 +128,18 @@ class Patrol extends React.Component<IProps, IState> {
                     <View style={Styles.patrolActionRow}>
                         <View style={Styles.patrolActionView}>
                             <PatrolActionButton
+                                isDisabled={isPatrollingDisabled}
                                 icon={IconStart}
-                                text="Start Patrol"
+                                text={TEXT_START_PATROL}
                                 color={Styles.patrolStart}
                                 onPress={this.NavigationHandler}
                             />
                         </View>
                         <View style={Styles.patrolActionView}>
                             <PatrolActionButton
+                                isDisabled={!isPatrollingDisabled}
                                 icon={IconStop}
-                                text="Stop Patrol"
+                                text={TEXT_STOP_PATROL}
                                 color={Styles.patrolStop}
                                 onPress={this.NavigationHandler}
                             />
@@ -100,16 +148,18 @@ class Patrol extends React.Component<IProps, IState> {
                     <View style={{ ...Styles.patrolActionRow, marginTop: 20 }}>
                         <View style={Styles.patrolActionView}>
                             <PatrolActionButton
+                                isDisabled={false}
                                 icon={IconIncident}
-                                text="Incident"
+                                text={TEXT_INCIDENT}
                                 color={Styles.patrolIncident}
                                 onPress={this.NavigationHandler}
                             />
                         </View>
                         <View style={Styles.patrolActionView}>
                             <PatrolActionButton
+                                isDisabled={false}
                                 icon={IconSOS}
-                                text="SOS"
+                                text={TEXT_SOS}
                                 color={Styles.patrolSOS}
                                 onPress={this.NavigationHandler}
                             />
