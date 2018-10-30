@@ -1,4 +1,5 @@
 import * as React from 'react';
+import moment from 'moment';
 import { View, Text, Alert } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import CustomHeader from '../../components/CustomHeader/CustomHeader';
@@ -24,6 +25,10 @@ class Scanner extends React.Component<IProps> {
         super(props);
     }
 
+    public GetPatrolData = (code: string): string => {
+        return `Time: ${moment().format('Do MMMM, YYYY HH:mm:ss a')} \n\r Code: ${code}`;
+    }
+
     public render() {
         return (
             <View style={Styles.page}>
@@ -40,7 +45,7 @@ class Scanner extends React.Component<IProps> {
                                     this.camera.pausePreview();
                                 }
                                 setIsPatrolling(true).then(() => {
-                                    Alert.alert('Patrol Tour Started', e.data,
+                                    Alert.alert('Patrol Tour Started', this.GetPatrolData(e.data),
                                         [
                                             { text: 'OK', onPress: () => this.props.navigation.navigate('Dashboard') }
                                         ],

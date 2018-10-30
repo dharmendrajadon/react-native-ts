@@ -72,7 +72,7 @@ class Patrol extends React.Component<IProps, IState> {
         // Do Nothing
         switch (type) {
             case TEXT_START_PATROL:
-                Alert.alert('', 'Start new patrol tour?',
+                Alert.alert('Start Patrol!', 'Do you want to start new patrol tour?',
                     [
                         {
                             text: 'OK',
@@ -87,12 +87,21 @@ class Patrol extends React.Component<IProps, IState> {
                 break;
             case TEXT_STOP_PATROL:
                 setIsPatrolling(false).then(() => {
-                    this.setState({
-                        isPatrolling: false
-                    });
-                    Alert.alert('Patrol Tour Stopped', '',
+                    Alert.alert('Stop Patrolling!', 'Do you want to stop patrolling?',
                         [
-                            { text: 'OK', style: 'cancel' }
+                            {
+                                text: 'OK', onPress: () => {
+                                    this.setState({
+                                        isPatrolling: false
+                                    });
+                                    Alert.alert('Patrolling Stopped!', 'Patrolling has been stopped.',
+                                        [
+                                            { text: 'OK', style: 'cancel' }
+                                        ],
+                                        { cancelable: false }
+                                    );
+                                },
+                            }, { text: 'Cancel', style: 'cancel' },
                         ],
                         { cancelable: false }
                     );
